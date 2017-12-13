@@ -7,37 +7,6 @@ from PIL import Image
 from pycocotools.coco import COCO
 from shutil import copyfile
 
-
-
-def ids():
-    return [0,
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17,
-            18, 19, 20, 21, 22, 23, 24, 25, 27, 28, 31, 32, 33, 34, 35, 36,
-            37, 38, 39, 40, 41, 42, 43, 44, 46, 47, 48, 49, 50, 51, 52, 53,
-            54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 67, 70, 72, 73,
-            74, 75, 76, 77, 78, 79, 80, 81, 82, 84, 85, 86, 87, 88, 89, 90]
-
-
-def categories():  # 80 classes
-    return ['background',  # class zero
-            'person', 'car', 'bird', 'cat', 'dog']
-
-
-def id_to_category(category_id):
-    return {cid: categories()[idx] for idx, cid in enumerate(ids())}[category_id]
-
-
-def mkdir_p(path):
-    # http://stackoverflow.com/questions/600268/mkdir-p-functionality-in-python
-    try:
-        os.makedirs(path)
-    except OSError as exc:  # Python >2.5
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else:
-            raise
-
-
 def coco_json_to_segmentation(seg_mask_path, annFile, source_image_path, target_image_path, img_ids):
     """
 
@@ -69,8 +38,7 @@ def coco_json_to_segmentation(seg_mask_path, annFile, source_image_path, target_
         name = img['file_name']
         root_name = name[:-4] # get the name without the extension
         filename = os.path.join(seg_mask_path, root_name + ".png")
-        # file_exists = os.path.exists(filename)
-        # initialize empty mask
+
         MASK = np.zeros((h, w), dtype=np.uint8)
 
         # loop over annotations (annotation is for each individual object in an image)
@@ -81,7 +49,6 @@ def coco_json_to_segmentation(seg_mask_path, annFile, source_image_path, target_
                 cat_idx = subcat_ids.index(ann['category_id'])
                 subcat_count[cat_idx] += 1
 
-            # get a mask return by the COCO API (numpy 2D array)
             mask = coco.annToMask(ann)
             # get a binary array for where the mask > 0
             idxs = np.where(mask > 0)
@@ -131,8 +98,8 @@ def get_img_subset(annotation_file, subcat_names, not_subcat_names):
 if __name__=="__main__":
 
     # filter the images by category
-    train_annotation_file = '/home/riachimajid/mscoco/annotations/instances_train2017.json'
-    val_annotation_file = '/home/riachimajid/mscoco/annotations/instances_val2017.json'
+    train_annotation_file = '/home/riachielsa/mscoco/annotations/instances_train2017.json'
+    val_annotation_file = '/home/riachielsa/mscoco/annotations/instances_val2017.json'
 
     train_coco = COCO(train_annotation_file)
     val_coco = COCO(val_annotation_file)
@@ -157,16 +124,16 @@ if __name__=="__main__":
     train_img_set_ids = get_img_subset(train_annotation_file, subcat_names, not_subcat_names)
     val_img_set_ids = get_img_subset(val_annotation_file, subcat_names, not_subcat_names)
 
-    seg_mask_output_paths = ['/home/riachimajid/mscoco/train/masks/',
-                             '/home/riachimajid/mscoco/val/masks/']
+    seg_mask_output_paths = ['/home/riachielsa/mscoco/train/masks/',
+                             '/home/riachielsa/mscoco/val/masks/']
 
     annotation_paths = [train_annotation_file, val_annotation_file]
 
-    source_image_paths = ['/home/riachimajid/mscoco/train/train2017/',
-                          '/home/riachimajid/mscoco/val/val2017/']
+    source_image_paths = ['/home/riachielsa/mscoco/train/train2017/',
+                          '/home/riachielsa/mscoco/val/val2017/']
 
-    seg_mask_image_paths = ['/home/riachimajid/mscoco/train/imgs/',
-                            '/home/riachimajid/mscoco/val/imgs/']
+    seg_mask_image_paths = ['/home/riachielsa/mscoco/train/imgs/',
+                            '/home/riachielsa/mscoco/val/imgs/']
 
 
     img_set_ids = [train_img_set_ids, val_img_set_ids]

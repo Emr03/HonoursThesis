@@ -11,7 +11,7 @@ from pycocotools.coco import COCO
 
 def gen_categorical_masks():
 
-    subcat_names = ['background', 'person', 'car', 'airplane', 'bus', 'train', 'truck',
+    subcat_names = ['background', 'person', 'car',
                     'bird', 'cat', 'dog']
 
     train_annotation_file = '/home/riachielsa/mscoco/annotations/instances_train2017.json'

@@ -1,5 +1,5 @@
 """
-Implements image segmentation on top of an image saliency network
+Implements image segmentation
 """
 
 from keras.layers.convolutional import Conv2D
